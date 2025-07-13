@@ -1,0 +1,159 @@
+units:
+  # Spacing Variables
+  kx: cx
+  ky: cy
+
+  $default_width: 18
+  $default_height: 17
+  mirror_offset: 100
+
+  # Padding Variables
+  draw_board_offset: 1
+  px: kx + draw_board_offset
+  py: ky + draw_board_offset
+
+  # Staggers
+  ring_stagger: 0.66kx
+  middle_stagger: 0.35kx
+  index_stagger: -0.25kx
+  inner_stagger: -0.15kx
+
+points:
+  zones:
+    matrix:
+      key:
+        padding: 1ky
+        spread: 1kx
+      columns:
+        pinky:
+        ring:
+          key:
+            stagger: ring_stagger
+            splay: -6
+            spread: 1kx+1
+        middle:
+          key:
+            stagger: middle_stagger
+            splay: -3
+            spread: 1kx+0.6
+        index.key.stagger: index_stagger
+        inner.key.stagger: inner_stagger
+      rows:
+        bottom:
+        home:
+        top:
+      rotate: 9
+      mirror:
+        ref: matrix_index_bottom
+        distance: mirror_offset
+    thumb:
+      anchor:
+        ref: matrix_index_bottom
+        shift: [-7, -ky-0.25kx] # adjust as needed
+      columns:
+        scroller:
+          key:
+            rotate: 0
+            name: scroller
+        thumb_one:
+          key:
+            rotate: -15
+            stagger: -0.145kx
+            spread: kx+0.11kx
+            name: thumb_15deg
+        thumb_two:
+          key:
+            rotate: -30
+            stagger: -0.43kx
+            spread: kx+0.04kx
+            name: thumb_30deg
+      rows:
+        bottom:
+      mirror:
+        ref: matrix_index_bottom
+        distance: mirror_offset
+outlines:
+  raw:
+    - what: rectangle
+      where: true
+      size: [kx, ky]
+      bound: true
+  keys:
+    - what: rectangle
+      where: true
+      size: [kx, ky]
+  board:
+    - what: polygon
+      operation: stack
+      points:
+        #CHECK FOR OVERLAP ETC....
+        # BL, BR, TR
+        - ref: thumb_30deg # Top Right
+          shift: [0.5px, 0.5py]
+        - ref: thumb_30deg # Bottom Right
+          shift: [0.5px, -0.5py]
+        - ref: thumb_30deg # Bottom Left
+          shift: [-0.5px, -0.5py]
+
+        # BR, BL
+        - ref: thumb_15deg
+          shift: [-0.5px, -0.5py]
+
+        # BR, BL
+        - ref: scroller
+          shift: [-0.5px, -0.5py]
+
+        # BL
+        - ref: scroller
+          shift: [-0.5px-2.45kx, -0.5py]
+
+        # TL, TR, BR
+        - ref: matrix_pinky_top
+          shift: [-0.5px, 0.5py]
+        - ref: matrix_pinky_top
+          shift: [0.668px, 0.5py]
+
+        #TL, TR
+
+        - ref: matrix_ring_top
+          shift: [-0.5px, 0.5py]
+        - ref: matrix_ring_top
+          shift: [0.579px, 0.5py]
+
+        # TL, TR, BR
+        - ref: matrix_middle_top
+          shift: [-0.5px, 0.5py]
+        - ref: matrix_middle_top
+          shift: [0.5px, 0.5py]
+        - ref: matrix_middle_top
+          shift: [0.5px, 0.5py+index_stagger]
+
+        # TR, BR
+        - ref: matrix_index_top
+          shift: [0.5px, 0.5py]
+        - ref: matrix_index_top
+          shift: [0.5px, 0.5py+inner_stagger]
+
+        #TR, BR
+
+        - ref: matrix_inner_top
+          shift: [0.5px, 0.5py]
+
+        # Add some space here for nice!nano to add later
+        - ref: matrix_inner_top
+          shift: [0.5px, -0.5py-0.8+2draw_board_offset]
+        - ref: matrix_inner_top
+          shift: [0.5px+17.8, -0.5py+-0.8+2draw_board_offset]
+        - ref: matrix_inner_top
+          shift: [0.5px+17.8, -0.5py-0.8-33.2-2draw_board_offset-10]
+        - ref: thumb_30deg # Top Right
+          shift: [0.5px, 0.596py]
+
+  combo:
+    - name: board
+    - operation: stack
+      name: keys
+  combo2:
+    - name: board
+    - operation: stack
+      name: raw
