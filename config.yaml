@@ -293,7 +293,7 @@ outlines:
       name: combined_right
   board_final:
     - name: combined_leftright
-    - operation: subtract
+    - operation: stack
       name: keys
 pcbs:
   splitkb:
