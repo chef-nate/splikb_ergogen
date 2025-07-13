@@ -21,6 +21,8 @@ units:
 points:
   zones:
     matrix:
+      anchor:
+        shift: [80, -180]
       key:
         padding: 1ky
         spread: 1kx
@@ -289,7 +291,22 @@ outlines:
     - name: combined_left
     - operation: stack
       name: combined_right
-  combo:
+  board_final:
     - name: combined_leftright
-    - operation: stack
+    - operation: subtract
       name: keys
+pcbs:
+  splitkb:
+    outlines:
+      main:
+        outline: combined_leftright
+    footprints:
+      keys:
+        what: choc
+        where: true
+        params:
+          keycaps: true
+          reverse: false
+          hotswap: true
+          from: "GND"
+          to: "{{name}}"
