@@ -81,23 +81,19 @@ outlines:
   keys:
     - what: rectangle
       where: true
-      size: [kx, ky]
-  board:
+      size: [kx-2, kx-2]
+  board_left:
     - what: polygon
       operation: stack
       points:
-        #CHECK FOR OVERLAP ETC....
+        #Reserve space for our circle inersection
         # BL, BR, TR
         - ref: thumb_30deg # Top Right
           shift: [0.5px, 0.5py]
         - ref: thumb_30deg # Bottom Right
           shift: [0.5px, -0.5py]
-        - ref: thumb_30deg # Bottom Left
-          shift: [-0.5px, -0.5py]
-
-        # BR, BL
-        - ref: thumb_15deg
-          shift: [-0.5px, -0.5py]
+        - ref: scroller # Bottom Left
+          shift: [-0.5px, -0.5py-py]
 
         # BR, BL
         - ref: scroller
@@ -149,11 +145,27 @@ outlines:
         - ref: thumb_30deg # Top Right
           shift: [0.5px, 0.596py]
 
+  palm_curve:
+    - what: circle
+      adjust:
+        aggregate:
+          method: midpoint
+          parts:
+            - ref: thumb_30deg # Bottom Right
+              shift: [0.5px, -0.5py]
+            - ref: thumb_15deg # Bottom Middle
+              shift: [0px, -0.5py-1.5]
+            - ref: scroller # Bottom Left
+              shift: [-0.5px, -0.5py]
+      radius:
+        ref: thumb_30deg
+        shift: [0.5px, -0.5py]
+  combined_left:
+    - name: board_left
+    - operation: subtract
+      name: palm_curve
+
   combo:
-    - name: board
+    - name: combined_left
     - operation: stack
       name: keys
-  combo2:
-    - name: board
-    - operation: stack
-      name: raw
